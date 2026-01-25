@@ -2,16 +2,31 @@
   'use strict';
 
   var ROUTE_PATH = '/about/academicouncil';
-  var PDF_PATH = '/docs/ISL-Second-Acad-Council-MOM-26-July-2025.pdf';
+  var PDF_RELATIVE_PATH = 'docs/ISL-Second-Acad-Council-MOM-26-July-2025.pdf';
+
+  function joinUrlPath(basePath, relativePath) {
+    var base = String(basePath || '').replace(/\/+$/, '');
+    var rel = String(relativePath || '').replace(/^\/+/, '');
+    if (!base) return '/' + rel;
+    return base + '/' + rel;
+  }
+
+  function getAppBasePath() {
+    // GitHub Pages project sites are served from `/<repo>/...`.
+    // This page is rendered at `/<base>/about/academicouncil`, so we can derive
+    // the base by stripping the route prefix.
+    var path = (window.location && window.location.pathname) ? window.location.pathname : '';
+    var idx = path.indexOf(ROUTE_PATH);
+    if (idx === -1) return '';
+    return path.slice(0, idx).replace(/\/+$/, '');
+  }
 
   function getPdfUrl() {
-    // When served from a web server, `/docs/...` is correct.
-    // When opened via `file://` (local testing), leading `/` points to disk root,
-    // so we switch to a relative path.
+    // For local `file://` viewing, keep it relative.
     if (window.location && window.location.protocol === 'file:') {
-      return PDF_PATH.replace(/^\//, '');
+      return PDF_RELATIVE_PATH;
     }
-    return PDF_PATH;
+    return joinUrlPath(getAppBasePath(), PDF_RELATIVE_PATH);
   }
 
   function isAcademicCouncilRoute() {
@@ -20,10 +35,11 @@
   }
 
   function getImageUrl(fileName) {
+    var clean = String(fileName).replace(/^\/+/, '');
     if (window.location && window.location.protocol === 'file:') {
-      return fileName;
+      return clean;
     }
-    return '/' + String(fileName).replace(/^\/+/, '');
+    return joinUrlPath(getAppBasePath(), clean);
   }
 
   function buildAcademicCouncilNode() {
