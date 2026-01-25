@@ -11,6 +11,21 @@
     <link rel="stylesheet" href="asset/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="manifest" href="./manifest.json" />
     <title>ISL Engineering College</title>
+
+    <script>
+        // If GitHub Pages served 404.html for a client-side route, restore the intended
+        // path so the React router can render the correct page.
+        (function () {
+            try {
+                var redirect = window.sessionStorage.getItem('spa-redirect');
+                if (redirect) {
+                    window.sessionStorage.removeItem('spa-redirect');
+                    window.history.replaceState(null, null, redirect);
+                }
+            } catch (e) { }
+        })();
+    </script>
+
     <script defer="defer" src="asset/static/js/main.64d07445.js"></script>
     <script defer="defer" src="academic-council.js"></script>
     <link href="asset/static/css/main.f1b4b188.css" rel="stylesheet">

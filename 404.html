@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#192f59" />
+  <title>Redirecting…</title>
+  <script>
+    // GitHub Pages does not support server-side rewrites for SPAs.
+    // This file captures the requested path and redirects to the site root,
+    // where index.html restores the path for the client-side router.
+    (function () {
+      var requested = window.location.pathname + window.location.search + window.location.hash;
+      try {
+        window.sessionStorage.setItem('spa-redirect', requested);
+      } catch (e) {}
+
+      // Redirect to the current directory (works well for single-segment routes on both
+      // user pages and project pages).
+      window.location.replace('./');
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting…</p>
+</body>
+</html>
