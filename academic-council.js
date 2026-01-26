@@ -24,9 +24,9 @@
   function getPdfUrl() {
     // For local `file://` viewing, keep it relative.
     if (window.location && window.location.protocol === 'file:') {
-      return PDF_RELATIVE_PATH;
+      return PDF_RELATIVE_PATH + '#toolbar=0&navpanes=0&scrollbar=0';
     }
-    return joinUrlPath(getAppBasePath(), PDF_RELATIVE_PATH);
+    return joinUrlPath(getAppBasePath(), PDF_RELATIVE_PATH) + '#toolbar=0&navpanes=0&scrollbar=0';
   }
 
   function isAcademicCouncilRoute() {
@@ -79,6 +79,8 @@
     viewerWrap.style.height = '80vh';
     viewerWrap.style.minHeight = '600px';
     viewerWrap.style.background = '#fff';
+    // Discourage downloading via right-click menu (not a security control).
+    viewerWrap.oncontextmenu = function () { return false; };
 
     // Prefer <object> so browsers with built-in PDF viewer render inline.
     // Fallback content inside <object> will be shown if PDF preview is not supported.
@@ -121,7 +123,7 @@
     galleryGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(180px, 1fr))';
     galleryGrid.style.gap = '12px';
 
-    var imageFiles = ['1.jpeg', '2.jpeg', '3.jpeg', '4.jpeg', '5.jpeg', '6.jpeg'];
+    var imageFiles = ['2.jpeg', '3.jpeg', '4.jpeg', '6.jpeg'];
     for (var i = 0; i < imageFiles.length; i++) {
       var fileName = imageFiles[i];
       var src = getImageUrl(fileName);
