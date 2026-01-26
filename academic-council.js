@@ -123,7 +123,7 @@
     galleryGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(180px, 1fr))';
     galleryGrid.style.gap = '12px';
 
-    var imageFiles = ['2.jpeg', '3.jpeg', '4.jpeg'];
+    var imageFiles = ['2.jpeg', '3.jpeg', '4.jpeg', '6.jpeg'];
     for (var i = 0; i < imageFiles.length; i++) {
       var fileName = imageFiles[i];
       var src = getImageUrl(fileName);
