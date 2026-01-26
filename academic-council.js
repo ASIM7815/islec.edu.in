@@ -109,54 +109,6 @@
     object.appendChild(fallback);
     viewerWrap.appendChild(object);
 
-    var galleryWrap = document.createElement('div');
-    galleryWrap.className = 'mt-25';
-    galleryWrap.style.marginTop = '24px';
-
-    var galleryTitle = document.createElement('h5');
-    galleryTitle.className = 'mb-15 text-center';
-    galleryTitle.style.marginBottom = '12px';
-    galleryTitle.textContent = 'IMAGES OF ACADEMIC COUNCIL';
-
-    var galleryGrid = document.createElement('div');
-    galleryGrid.style.display = 'grid';
-    galleryGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(180px, 1fr))';
-    galleryGrid.style.gap = '12px';
-
-    var imageFiles = ['2.jpeg', '3.jpeg', '4.jpeg', '6.jpeg'];
-    for (var i = 0; i < imageFiles.length; i++) {
-      var fileName = imageFiles[i];
-      var src = getImageUrl(fileName);
-
-      var link = document.createElement('a');
-      link.href = src;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.style.display = 'block';
-      link.style.borderRadius = '10px';
-      link.style.overflow = 'hidden';
-      link.style.border = '1px solid rgba(0,0,0,0.12)';
-      link.style.background = '#fff';
-
-      var img = document.createElement('img');
-      img.src = src;
-      img.alt = 'Academic Council photo ' + (i + 1);
-      img.loading = 'lazy';
-      img.style.display = 'block';
-      img.style.width = '100%';
-      img.style.height = 'auto';
-      img.style.objectFit = 'cover';
-
-      // Keep thumbnails visually consistent where supported.
-      img.style.aspectRatio = '4 / 3';
-
-      link.appendChild(img);
-      galleryGrid.appendChild(link);
-    }
-
-    galleryWrap.appendChild(galleryTitle);
-    galleryWrap.appendChild(galleryGrid);
-
     var titleWrap = document.createElement('div');
     titleWrap.className = 'text-center';
     titleWrap.appendChild(h4);
@@ -164,7 +116,6 @@
 
     body.appendChild(titleWrap);
     body.appendChild(viewerWrap);
-    body.appendChild(galleryWrap);
 
     card.appendChild(body);
     col.appendChild(card);
