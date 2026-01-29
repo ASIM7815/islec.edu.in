@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#192f59" />
+  <meta name="robots" content="noindex" />
+
+  <link rel="icon" href="/images/unnamed.webp" />
+  <link rel="apple-touch-icon" href="/images/logo.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="/static/css/main.f1b4b188.css" rel="stylesheet">
+
+  <title>Academic Council | ISL Engineering College</title>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: #fff;
+    }
+
+    .ac-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ac-iframe {
+      width: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .ac-header-frame {
+      overflow: hidden;
+    }
+
+    .ac-footer-frame {
+      overflow: hidden;
+    }
+
+    .ac-content {
+      flex: 1;
+      padding: 16px;
+    }
+
+    .ac-title {
+      max-width: 1200px;
+      margin: 0 auto 12px auto;
+    }
+
+    .ac-title h3 {
+      margin: 10px 0 6px 0;
+    }
+
+    .ac-title p {
+      margin: 0;
+      opacity: 0.85;
+    }
+
+    .pdf-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .pdf-frame {
+      width: 100%;
+      height: 900px;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .pdf-frame {
+        height: 75vh;
+      }
+    }
+
+    .note {
+      max-width: 1200px;
+      margin: 10px auto 0 auto;
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ac-page">
+    <!-- Header rendered by the main React app, cropped to show header only -->
+    <iframe id="headerFrame" class="ac-iframe ac-header-frame" src="/" title="ISL Header" scrolling="no"></iframe>
+
+    <main class="ac-content">
+      <div class="ac-title">
+        <h3>Academic Council</h3>
+        <p>ISL Second Academic Council – MOM – 26 July 2025 (Signed, Final)</p>
+      </div>
+
+      <div class="pdf-shell">
+        <!-- Best-effort: hide built-in PDF toolbar + block in-frame downloads where browsers support it -->
+        <iframe
+          class="pdf-frame"
+          title="Academic Council PDF"
+          src="/docs/academic-council/isl-second-acad-council-mom-26-july-2025-signed-final.pdf#toolbar=0&navpanes=0&scrollbar=1"
+          sandbox="allow-same-origin"
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
+
+      <div class="note">
+        Note: On a static website it’s not technically possible to fully prevent saving/downloading a PDF once it’s viewable, but this page hides the download UI and blocks in-frame downloads in most modern browsers.
+      </div>
+    </main>
+
+    <!-- Footer rendered by the main React app, cropped to show footer only -->
+    <iframe id="footerFrame" class="ac-iframe ac-footer-frame" src="/" title="ISL Footer" scrolling="no"></iframe>
+  </div>
+
+  <script>
+    // Best-effort client-side discouragement (not security):
+    document.addEventListener('contextmenu', function (e) {
+      // Allow normal interactions inside iframes.
+      if (e.target && e.target.tagName !== 'IFRAME') e.preventDefault();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      const key = (e.key || '').toLowerCase();
+      const ctrlOrCmd = e.ctrlKey || e.metaKey;
+      if (ctrlOrCmd && (key === 's' || key === 'p')) {
+        e.preventDefault();
+      }
+    });
+
+    function cropFrameToOnly(frameEl, keepSelector) {
+      try {
+        const doc = frameEl.contentDocument;
+        if (!doc) return;
+
+        const keepEl = doc.querySelector(keepSelector);
+        if (!keepEl) return;
+
+        // Hide everything, then show the kept element.
+        const style = doc.createElement('style');
+        style.textContent = `
+          html, body { margin: 0 !important; padding: 0 !important; overflow: hidden !important; background: transparent !important; }
+          body > * { display: none !important; }
+          ${keepSelector} { display: block !important; }
+        `;
+        doc.head && doc.head.appendChild(style);
+
+        // Size the iframe to the kept element.
+        const resize = () => {
+          const rect = keepEl.getBoundingClientRect();
+          const height = Math.ceil(rect.height);
+          if (height > 0) frameEl.style.height = height + 'px';
+        };
+
+        // Resize now and after layout changes.
+        resize();
+        const ro = new ResizeObserver(resize);
+        ro.observe(keepEl);
+
+        // Also handle late-loading assets.
+        setTimeout(resize, 1000);
+        setTimeout(resize, 2500);
+      } catch (e) {
+        // If same-origin restrictions apply in some hosting setups, just leave the full page.
+      }
+    }
+
+    const headerFrame = document.getElementById('headerFrame');
+    const footerFrame = document.getElementById('footerFrame');
+
+    headerFrame.addEventListener('load', function () {
+      cropFrameToOnly(headerFrame, 'header');
+    });
+
+    footerFrame.addEventListener('load', function () {
+      cropFrameToOnly(footerFrame, 'footer');
+    });
+  </script>
+</body>
+
+</html>
